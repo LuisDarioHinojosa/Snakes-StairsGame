@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;GameBoard/src/GameBoard&apos; to &apos;GameBoar.cpp&apos;" description="Rename resource &apos;GameBoard&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/GameBoard" name="GameBoar.cpp" stamp="1590291663633" updateReferences="true"/>
+</session>

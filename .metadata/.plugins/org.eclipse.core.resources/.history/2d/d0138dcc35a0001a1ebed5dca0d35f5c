@@ -1,0 +1,119 @@
+//============================================================================
+// Name        : GameBoard.cpp
+// Author      : Luis Dario
+// Version     :
+// Copyright   : Your copyright notice
+// Description : Hello World in C++, Ansi-style
+//============================================================================
+
+#include <iostream>
+using namespace std;
+#include "GameBoard.h"
+#include <stdlib.h>
+
+
+GameBoard::GameBoard(int size, int row, int codeNum,vector<int>* dec,vector<string>*enc)
+:size(size),rowLength(row),codeNum(codeNum),decode(*dec),encode(*enc)
+{
+	// TODO Auto-generated constructor stub
+	/*
+	this->size = size;
+	this->rowLength = row;
+	this->codeNum = codeNum;
+	this->encode = *enc;
+	this->decode = *dec;
+	*/
+	board.reserve(this->size);
+	delete dec;
+	delete enc;
+
+}
+
+GameBoard::~GameBoard() {
+	// TODO Auto-generated destructor stub
+
+}
+
+void GameBoard::fillBoard(int num){
+	for(int i = 0; i < size; i++){
+		board.push_back(num);
+	}
+}
+
+void GameBoard::printBoard(){
+	int row = this->rowLength --;
+	for (int i = 0; i < size; i++){
+		cout << board[i] << " ";
+	}
+	cout << " " << endl;
+}
+
+void GameBoard::printDecode(){
+	for (int i = 0; i < codeNum; i++){
+		cout << decode[i] << " ";
+		}
+	cout << " " << endl;
+
+}
+
+void GameBoard::printEncode(){
+	for (int i = 0; i < codeNum; i++){
+		cout << encode[i] << " ";
+		}
+	cout << " " << endl;
+
+}
+
+
+void GameBoard::printBoth(){
+	printDecode();
+	printEncode();
+
+}
+
+void GameBoard::fillBoardRand(int min,int max){
+	int num;
+	for(int i = 0; i < size; i++){
+		num = min + rand() %(max -min) +1;
+		board.push_back(num);
+	}
+}
+
+void GameBoard::printMatrix(){
+	int num = this->rowLength - 1;
+	int counter = 0;
+	for(int i = 0; i < size; i++){
+		cout << board[i] << " ";
+		if (counter == num){
+			cout << " " << endl;
+			counter = -1;
+		}
+		counter ++;
+
+	}
+}
+
+string GameBoard::decodeNumber(int number){
+	string res = " ";
+	for (int i = 0; i < this->rowLength; i++){
+		if(decode[i] == number){
+			res = encode[i];
+		}
+	}
+	return res;
+}
+
+void GameBoard::printDecodedMatrix(){
+	int num = this->rowLength - 1;
+	int counter = 0;
+	for(int i = 0; i < size; i++){
+		cout << decodeNumber(board[i]) << " ";
+		if (counter == num){
+			cout << " " << endl;
+			counter = -1;
+		}
+		counter ++;
+
+	}
+}
+

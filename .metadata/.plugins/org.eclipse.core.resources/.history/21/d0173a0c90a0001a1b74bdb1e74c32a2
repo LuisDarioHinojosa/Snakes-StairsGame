@@ -1,0 +1,184 @@
+/*
+ * SnakeBoard.cpp
+ *
+ *  Created on: 24 may. 2020
+ *      Author: luisd
+ */
+
+#include "SnakeBoard.h"
+#include "GameBoard.h"
+#include <iostream>
+#include <vector>
+#include "TablePlayer.h"
+#include <algorithm>
+#include <stdlib.h>
+using namespace std;
+
+SnakeBoard::SnakeBoard(int size, int row, int codeNum,int stairs ,vector<int>* dec,vector<string>*enc,vector <int>* snakes, vector <int>* ladders)
+//:GameBoard(size,row,codeNum,*dec,*enc),numSL(stairs),snakes({6,13,27}),ladders({4,22,31})
+{
+	// TODO Auto-generated constructor stub
+
+	this->size = size;
+	this->rowLength = row;
+	this->codeNum = codeNum;
+	this->encode = *enc;
+	this->decode = *dec;
+	this->numSL = stairs;
+	this->snakes = *snakes;
+	this->ladders = *ladders;
+	this->boardEn.reserve(size);
+	//this->posHolder[0] = 0;
+	//this->posHolder[1] = 0;
+	board.reserve(this->size);
+	players.reserve(2);
+	//delete dec;
+	//delete enc;
+
+}
+
+SnakeBoard::~SnakeBoard() {
+
+}
+
+
+int SnakeBoard::getRanNum(int min,int max){
+	int num = min + rand() %(max -min) +1;
+	return num;
+}
+
+void SnakeBoard::printLadders(){
+	for(int i = 0; i < this->numSL; i++){
+		cout << ladders[i] << " ";
+	}
+	cout << " " << endl;
+}
+void SnakeBoard::printSnakes(){
+	for(int i = 0; i < this->numSL; i++){
+		cout << snakes[i] << " ";
+	}
+	cout << " " << endl;
+}
+
+
+
+
+void SnakeBoard::fillSnakeBoard(){
+	for (int i = 0; i < this->size; i++){
+		if(find(ladders.begin(),ladders.end(),i)!=ladders.end()){
+			this->board.push_back(decode[2]);
+		}
+		else if(find(snakes.begin(),snakes.end(),i)!=snakes.end()){
+			this->board.push_back(decode[1]);
+		}
+		else{
+			this->board.push_back(decode[0]);
+		}
+	}
+}
+
+void SnakeBoard::resetSnakeBoard(){
+	for (int i = 0; i < this->size; i++){
+		if(find(ladders.begin(),ladders.end(),i)!=ladders.end()){
+			this->board[i] = decode[2];
+		}
+		else if(find(snakes.begin(),snakes.end(),i)!=snakes.end()){
+			this->board[i] = decode[1];
+		}
+		else{
+			this->board[i] = decode[0];
+		}
+	}
+
+}
+
+
+void SnakeBoard::enterPlayer(TablePlayer* ply){
+	players.push_back(ply);
+}
+
+
+TablePlayer SnakeBoard::getPlayer(int index){
+	TablePlayer pl = *players[index];
+	return pl;
+}
+
+
+
+void SnakeBoard::getGameStatus(TablePlayer* pl1,TablePlayer* pl2){
+	pl1->print();
+	pl2->print();
+
+}
+
+// index stands for the current players Position
+void SnakeBoard::changeBoardValue(int index, int id){
+	if(id == getPlayer(0).getId()){
+		valHolder[0] = board[index];
+		board[index] = getPlayer(0).getTableCode();
+		posHolder[0] = index;
+	}
+	else if(id == getPlayer(1).getId()){
+		valHolder[1] = board[index];
+		board[index] = getPlayer(1).getTableCode();
+		posHolder[1] = index;
+	}
+}
+
+void SnakeBoard::resetValue(int id){
+	if(id == getPlayer(0).getId()){
+		board[posHolder[0]] = valHolder[0];
+	}
+	else if(id == getPlayer(1).getId()){
+		board[posHolder[1]] = valHolder[1];
+
+	}
+
+}
+
+
+
+
+
+void SnakeBoard::checkPosition(TablePlayer *pl){
+	int value = board[pl->getPosition()];
+	string letter = decodeNumber(value);
+	if(letter == "S"){
+		pl->changePosition(3,false);
+	}
+	else if(letter == "L"){
+		pl->changePosition(3,true);
+
+	}
+	changeBoardValue(pl->getPosition(), pl->getId());
+
+}
+
+bool SnakeBoard::checkFinalPosition(TablePlayer *pl,TablePlayer *pl2){
+	bool res = false;
+	if((pl->getPosition() >= this->size) ||(pl2->getPosition() >= this->size) ){
+		res = true;
+	}
+	return res;
+}
+
+bool SnakeBoard::checkPosVal(TablePlayer *pl){
+	int value = board[pl->getPosition()];
+	bool res = false;
+	if((decodeNumber(value) == "S") || (decodeNumber(value) == "L") ){
+		res = true;
+	}
+	return res;
+}
+
+
+void SnakeBoard::checkPosLoop(TablePlayer *pl){
+	bool res = checkPosVal(pl);
+	while(res != false){
+		checkPosition(pl);
+		res = checkPosVal(pl);
+	}
+}
+
+
+

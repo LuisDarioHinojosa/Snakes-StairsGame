@@ -1,0 +1,8 @@
+22:58:06 **** Incremental Build of configuration Debug for project DateClass ****
+Info: Internal Builder is used for build
+g++ -o DateClass.exe "src\\Date.o" "src\\DateClass.o" 
+c:/mingw/bin/../lib/gcc/mingw32/8.2.0/../../../../mingw32/bin/ld.exe: c:/mingw/bin/../lib/gcc/mingw32/8.2.0/../../../libmingwex.a(vsnprintf.o):(.text+0x0): multiple definition of `vsnprintf'; src\Date.o:c:/mingw/include/stdio.h:491: first defined here
+collect2.exe: error: ld returned 1 exit status
+
+22:58:06 Build Failed. 1 errors, 0 warnings. (took 214ms)
+

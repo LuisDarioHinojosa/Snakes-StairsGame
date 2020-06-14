@@ -1,0 +1,47 @@
+//============================================================================
+// Name        : SnakesGameClass.cpp
+// Author      : Luis Dario
+// Version     :
+// Copyright   : Your copyright notice
+// Description : Hello World in C++, Ansi-style
+//============================================================================
+
+#include "SnakesGame.h"
+#include "Videogame.h"
+#include "Dice.h"
+#include "TablePlayer.h"
+#include "SnakeBoard.h"
+#include <iostream>
+#include <stdlib.h>
+#include <vector>
+using namespace std;
+
+int main() {
+	SnakesGame game("Snakes&Ladders", "Instructions:", "Luis Dario");
+	//snakes.game();
+	//snakes.startGameplay();
+
+
+/*
+	int number = game.dice->throw_dice();
+	game.snakes.printDecodedMatrix();
+	game.pl1->changePosition(2,true);
+	game.pl2->changePosition(9,true);
+	cout << "cp" << endl;
+
+
+	game.snakes.checkPosLoop(game.pl1);
+	game.pl1->print();
+	game.snakes.checkPosLoop(game.pl2);
+	//snakes.checkPosLoop(pl1);
+	//snakes.checkPosLoop(pl2);
+	game.snakes.printDecodedMatrix();
+	game.snakes.getGameStatus(game.pl1,game.pl2);
+
+
+
+
+ */
+
+	return 0;
+}

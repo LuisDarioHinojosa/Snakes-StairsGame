@@ -1,0 +1,17 @@
+/*
+ * SnakesGame.h
+ *
+ *  Created on: 26 may. 2020
+ *      Author: luisd
+ */
+
+#ifndef SNAKESGAME_H_
+#define SNAKESGAME_H_
+
+class SnakesGame {
+public:
+	SnakesGame();
+	virtual ~SnakesGame();
+};
+
+#endif /* SNAKESGAME_H_ */

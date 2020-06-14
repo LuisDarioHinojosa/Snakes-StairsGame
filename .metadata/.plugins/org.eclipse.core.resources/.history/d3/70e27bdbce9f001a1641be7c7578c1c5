@@ -1,0 +1,193 @@
+/*
+ * SnakesGame.cpp
+ *
+ *  Created on: 26 may. 2020
+ *      Author: luisd
+ */
+
+#include "SnakesGame.h"
+#include "Videogame.h"
+#include "Dice.h"
+#include "TablePlayer.h"
+#include "SnakeBoard.h"
+#include <iostream>
+#include <stdlib.h>
+#include <vector>
+using namespace std;
+
+SnakesGame::SnakesGame(string name,string ins,string author) {
+	this->name = name;
+	this->instructions;
+	this->inGame = false;
+	this->turnCounter = 0;
+	this->author = author;
+	Dice d(false);
+	this->dice = d;
+	cout << "Initializing ..." << endl;
+
+	TablePlayer* pl1= new TablePlayer("Player 1",1,4);
+	TablePlayer* pl2 = new TablePlayer("Player 2",2,5);
+	this->pl1 = pl1;
+	this->pl2 = pl2;
+	vector<int>*decode = new vector<int>;
+	vector <string>*encode = new vector<string>;
+	*decode = {1,2,3,4,5};
+	*encode = {"N","S","L","P1","P2"};
+	SnakeBoard snakes(36,6,5,3,decode,encode);
+	this->snakes = snakes;
+	this->snakes.fillSnakeBoard();
+	this->snakes.enterPlayer(pl1);
+	this->snakes.enterPlayer(pl2);
+	this->diceValues[0] = 0;
+	this->diceValues[1] = 0;
+}
+
+SnakesGame::~SnakesGame() {
+	// TODO Auto-generated destructor stub
+	delete this->pl1;
+	delete this->pl2;
+}
+
+void SnakesGame::game(){
+	initializeGame();
+}
+
+void SnakesGame::initializeGame(){
+	startGame();
+	startMenu();
+
+}
+void SnakesGame::startGameplay(){
+	string name1;
+	string name2;
+	cout << "Enter Player1´s name:" << endl;
+	cin >> name1;
+	cout << "Enter Player2´s name:" << endl;
+	cin >> name2;
+	this->pl1->setUsername(name1);
+	this->pl1->setUsername(name2);
+}
+
+void SnakesGame::startMenu(){
+	int opt;
+	cout << "1|Start Game" << endl;
+	cout << "2|Instructions" << endl;
+	cout << "3|Quit" << endl;
+
+	cin >> opt;
+	switch(opt){
+	case 1:
+		startGameplay();
+		break;
+	case 2:
+		instructionsMenu();
+		break;
+	case 3:
+		plQuit();
+		quitComprobation();
+		break;
+	}
+
+}
+void SnakesGame::instructionsMenu(){
+	string res;
+	cout << getInstructions() << endl;
+	cout << "type return to get to main menu" << endl;
+	if (res == "return"){
+		startMenu();
+	}
+	else{
+		while(res != "return"){
+			cout << "Incorrect Command, please type return:" << endl;
+			cin >> res;
+		}
+		startMenu();
+
+	}
+}
+
+int SnakesGame::diceThrow(){
+	int steps = 0;
+	string ord = " ";
+	cout << "type \"t\" throw your dice" << endl;
+	cin >> ord;
+	if (ord == "t"){
+		steps = this->dice.throw_dice();
+	}
+	else{
+		while(ord != "t"){
+			cout << "Incorrect Command, please type \"t\":" << endl;
+			cin >> ord;
+		}
+
+		steps = this->dice.throw_dice();
+	}
+	return steps;
+}
+int SnakesGame::diceTurn(TablePlayer * pl){
+	cout << pl->getUsername() << "its your turn!!" << endl;
+	int res =diceThrow();
+	return res;
+}
+void SnakesGame::firstTurn(){
+	updateTurnCounter();
+	int number;
+
+
+	int posVal1;
+	int posVal2;
+	string posChar1;
+	string posChar2;
+
+
+	int pos1 = pl1->getPosition();
+	int pos2 = pl2->getPosition();
+	number = diceTurn(this->pl1);
+	this->diceValues[0] = number;
+	this->pl1->changePosition(number, true);
+
+	number = diceTurn(this->pl2);
+	this->diceValues[1] = number;
+	this->pl2->changePosition(number, true);
+
+
+	posVal1 = this->snakes.board[pl1->getPosition()];
+	posVal2 = this->snakes.board[pl2->getPosition()];
+	posChar1 = this->snakes.decodeNumber(posVal1);
+	posChar2 = this->snakes.decodeNumber(posVal2);
+
+	this->snakes.checkPosition(this->pl1);
+	this->snakes.checkPosition(this->pl2);
+	cout << " " << endl;
+	this->snakes.printDecodedMatrix();
+	this->snakes.getGameStatus(this->pl1,this->pl2);
+	cout << " " << endl;
+	cout << "***" << pl1->getUsername() << "***" << endl;
+	coutInformation(getTurnCounter(),pos1,diceValues[0],posChar1,pl1);
+	cout << "***" << pl2->getUsername() << "***" << endl;
+	coutInformation(getTurnCounter(),pos2,diceValues[1],posChar2,pl2);
+	cout << " " << endl;
+	cout << " " << endl;
+
+
+}
+
+
+void SnakesGame::turn(){
+	this->snakes.resetSnakeBoard();
+	firstTurn();
+}
+
+void SnakesGame::coutInformation(int turn, int pos1, int dice,string chr, TablePlayer* pl){
+	//int value = this->snakes.board[pos1];
+	cout << turn << " "  << pl->getId() << " "  << pos1 << " "  << dice << " "  << chr << " " << pl->getPosition() << endl;
+}
+
+
+void SnakesGame::gamePlay(){
+	firstTurn();
+	while(this->inGame != false){
+		turn();
+	}
+	quitComprobation();
+}

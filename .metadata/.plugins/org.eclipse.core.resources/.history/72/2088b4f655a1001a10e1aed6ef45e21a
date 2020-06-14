@@ -1,0 +1,31 @@
+/*
+ * Player.cpp
+ *
+ *  Created on: 17 may. 2020
+ *      Author: luisd
+ */
+
+#include "Player.h"
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+using namespace std;
+
+Player::Player(string name){
+
+}
+
+void Player::update_score(){
+	score ++;
+}
+
+
+
+
+string Player::getUsername(){
+	return this->username;
+}
+
+void Player::setUsername(string name){
+	this->username = name;
+}

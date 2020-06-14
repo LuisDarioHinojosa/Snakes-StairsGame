@@ -1,0 +1,29 @@
+/*
+ * Player.h
+ *
+ *  Created on: 28 may. 2020
+ *      Author: luisd
+ */
+
+#ifndef PLAYER_H_
+#define PLAYER_H_
+#include <string>
+#pragma once
+class Player {
+public:
+	Player()= default;
+	Player(string name);
+	void updateScore();
+	virtual void print();
+	void oneUP();
+	string getUserName();
+	void setUsername(string name);
+	int getScore();
+	virtual ~Player();
+protected:
+	string username;
+	int score;
+private:
+};
+
+#endif /* PLAYER_H_ */

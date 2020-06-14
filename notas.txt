@@ -1,0 +1,2 @@
+En la carpeta SnakesGameClass estan todos los headers y sourcefiles de las clases que se utilizadon. 
+La funcion main esta en el archivo SnakesGameClass.cpp

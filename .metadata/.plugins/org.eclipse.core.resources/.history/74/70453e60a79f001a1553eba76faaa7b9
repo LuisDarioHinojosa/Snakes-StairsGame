@@ -1,0 +1,150 @@
+/*
+ * Player.cpp
+ *
+ *  Created on: 17 may. 2020
+ *      Author: luisd
+ */
+
+#include "Player.h"
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+using namespace std;
+
+Player::Player(string name) {
+	username = name;
+	score = 0;
+	coins = 0;
+	lives = 9;
+	alive = true;
+	cout << "Welcome, " << username << endl;
+}
+
+void Player::update_score(){
+	score ++;
+}
+
+
+void Player::print(){
+	cout << username << "\n" << "lives: " << lives << "\n" << "score: " << score << "\n" << "coins: " << coins<< endl;
+}
+
+void Player::one_up(){
+	lives ++;
+}
+void Player::death(){
+	if (lives <= 0){
+		alive = false;
+	}
+}
+void Player::coin_up(){
+	coins++;
+}
+
+void Player::damage(){
+	int umbral;
+	int critic;
+	//srand (time(NULL));
+	umbral = rand() % 10 +1;
+	critic = rand() % 10 +1;
+	if(umbral == critic){
+		lives -=5;
+		cout << "Critical hit" << endl;
+	}
+	else {
+		lives --;
+	}
+	death();
+
+}
+
+void Player::life_boost(){
+	cout << "Chose an option: " << endl;
+	cout << "1 -> 1 life  | 3 coins" << endl;
+	cout << "2 -> 3 Life's| 5 coins" << endl;
+	cout << "3 -> 5 life´s| 10 coins" << endl;
+	int number;
+	cin >> number;
+	switch(number){
+	case 1:
+		if (coins >= 3){
+			coins -= 3;
+			lives ++;
+		}
+		else {
+			cout << "You dont have enough coins" << endl;
+		}
+		break;
+	case 2:
+		if (coins >= 5){
+			coins -= 5;
+			lives += 3;
+		}
+		else {
+			cout << "You dont have enough coins" << endl;
+		}
+		break;
+	case 3:
+		if (coins >= 10){
+			coins -= 10;
+			lives += 5;
+		}
+		else {
+			cout << "You dont have enough coins" << endl;
+		}
+		break;
+	}
+
+
+}
+
+
+bool Player::death_message(){
+	bool res = false;
+	string ans;
+	cout << "Game Over" << endl;
+	cout << "Continue?" << "\n" << "yes|no" << endl;
+	cin >> ans;
+	if (ans == "yes"){
+		res = true;
+	}
+	return res;
+}
+
+void Player::reset_dead_player(){
+	death();
+	if (alive == false){
+	bool res = death_message();
+	if (res == true){
+		this->coins = 0;
+		this->lives = 5;
+	}
+	else {
+		cout << "Game Over" << endl;
+		cout << "Total score: " << this->score << endl;
+		this->score = 0;
+	}
+	}
+}
+
+void Player::many_coins(int num){
+	for (int i = 0; i < num; i++){
+		coin_up();
+	}
+
+}
+
+void Player::score_boost(int num){
+	for (int i = 0; i < num; i++){
+		update_score();
+	}
+}
+void Player::lots_of_damage(int num){
+	for (int i = 0; i < num; i++){
+		damage();
+	}
+}
+
+string Player::getUsername(){
+	return this->username;
+}

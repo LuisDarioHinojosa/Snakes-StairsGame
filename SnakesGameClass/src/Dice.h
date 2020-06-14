@@ -1,0 +1,28 @@
+/*
+ * Dice.h
+ *
+ *  Created on: 17 may. 2020
+ *      Author: luisd
+ */
+
+#ifndef DICE_H_
+#define DICE_H_
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Dice {
+public:
+	Dice() = default;
+	Dice(bool);
+	virtual ~Dice();
+	int throw_dice();
+	void show_records();
+	bool getLoaded();
+private:
+	bool loaded;
+	vector<int> record;
+
+};
+
+#endif /* DICE_H_ */

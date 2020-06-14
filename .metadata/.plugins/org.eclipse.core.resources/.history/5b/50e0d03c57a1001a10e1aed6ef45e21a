@@ -1,0 +1,55 @@
+/*
+ * TablePlayer.cpp
+ *
+ *  Created on: 23 may. 2020
+ *      Author: luisd
+ */
+
+#include "TablePlayer.h"
+
+TablePlayer::TablePlayer(string username, int id, int tableC)
+:Player(username),iD(id),position(0),tableCode(tableC)
+{
+
+
+}
+
+TablePlayer::~TablePlayer() {
+	// TODO Auto-generated destructor stub
+}
+
+int TablePlayer::getPosition(){
+	return this->position;
+}
+
+int TablePlayer::getTableCode(){
+	return this->tableCode;
+}
+int TablePlayer::getId(){
+	return this->iD;
+}
+
+void TablePlayer::changePosition(int num,bool sing){
+	if (sing == true){
+		this->position = position + num;
+	}
+	else if(sing == false){
+		this->position = position - num;
+	}
+}
+
+
+void TablePlayer::sumPos(int n){
+	this->position += n;
+}
+void TablePlayer::restPos(int n){
+	this->position -=n;
+}
+
+void TablePlayer::print(){
+	cout << getUsername() << ": " << getPosition() << endl;
+}
+
+void TablePlayer::setPosition(int n){
+	this->position = n;
+}
